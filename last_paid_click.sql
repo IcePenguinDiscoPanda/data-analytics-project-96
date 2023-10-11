@@ -1,5 +1,6 @@
 with visitors_and_leads as (
     select
+    	s.visitor_id,
         s.visit_date,
         s.source as utm_source,
         s.medium as utm_medium,
@@ -28,6 +29,7 @@ with visitors_and_leads as (
     )
 )
 select
+	visitor_id,
     visit_date,
     utm_source,
     utm_medium,
@@ -38,5 +40,5 @@ select
     closing_reason,
     status_id
 from visitors_and_leads where rn = 1
-order by 7 desc nulls last, 1, 2, 3, 4
+order by 8 desc nulls last, 2, 3, 4, 5
 limit 10
