@@ -135,4 +135,17 @@ select
 from final_query 
 group by 1 
 having round(sum(total_cost)*1.0/sum(visitors_count), 2) is not null
+--корреляция Пирсона между затратами и выручкой
+select 
+	case 
+		when utm_source = 'vk' then utm_source
+		when utm_source = 'yandex' then utm_source
+		else 'else'
+	end as utm_source,
+	coalesce(sum(total_cost), 0) as total_cost,
+	sum(revenue) as revenue,
+	coalesce(CORR(total_cost, revenue), 0) as correlation
+from final_query
+group by 1
+
  	
