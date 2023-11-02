@@ -116,16 +116,16 @@ group by 1, 2
 select 
 	visit_date,
 	case 
-    	when utm_source like 'vk%' then 'vk'
-    	when utm_source like '%andex%' then 'yandex'
-    	when utm_source like 'twitter%' then 'twitter'
-    	when utm_source like '%telegram%' then 'telegram'
-    	when utm_source like 'facebook%' then 'facebook'
-    	else utm_source end,
-    sum(visitors_count)
-    from final_query
-    group by 1, 2	
-    order by 1
+    		when utm_source like 'vk%' then 'vk'
+    		when utm_source like '%andex%' then 'yandex'
+    		when utm_source like 'twitter%' then 'twitter'
+    		when utm_source like '%telegram%' then 'telegram'
+    		when utm_source like 'facebook%' then 'facebook'
+    		else utm_source end,
+	sum(visitors_count)
+from final_query
+group by 1, 2	
+order by 1
 
 --затраты на рекламу
 select 
