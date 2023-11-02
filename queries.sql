@@ -75,22 +75,22 @@ group by 1, 3, 4, 5, 6
 order by 9 desc nulls last, 1, 2 desc, 3, 4, 5
 )
 
---ЗАПРОСЫ В ДАШБОРД
+--Р—РђРџР РћРЎР« Р’ Р”РђРЁР‘РћР Р”
 
 --select * from final_query
---количество пользователей
+--РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 select sum(visitors_count) from final_query  
---количество лидов
+--РєРѕР»РёС‡РµСЃС‚РІРѕ Р»РёРґРѕРІ
 select sum(leads_count) from final_query
---конверсия в лиды
+--РєРѕРЅРІРµСЂСЃРёСЏ РІ Р»РёРґС‹
 select round(sum(leads_count)*100.0/sum(visitors_count), 2) from final_query
---конверсия в оплату
+--РєРѕРЅРІРµСЂСЃРёСЏ РІ РѕРїР»Р°С‚Сѓ
 select round(sum(purchases_count)*100.0/sum(leads_count), 2) from final_query
---затраты на рекламу
+--Р·Р°С‚СЂР°С‚С‹ РЅР° СЂРµРєР»Р°РјСѓ
 select sum(total_cost) from final_query
---выручка
+--РІС‹СЂСѓС‡РєР°
 select sum(revenue) from final_query
---пользователи по неделям и месяцам
+--РїРѕР»СЊР·РѕРІР°С‚РµР»Рё РїРѕ РЅРµРґРµР»СЏРј Рё РјРµСЃСЏС†Р°Рј
 select  
 	case 
 		when visit_date between '2023-06-01' and '2023-06-04' then '01/06-04/06' 
@@ -103,7 +103,7 @@ select
 	sum(visitors_count)
 from final_query
 group by 1, 2
---пользователи по дням
+--РїРѕР»СЊР·РѕРІР°С‚РµР»Рё РїРѕ РґРЅСЏРј
 select 
 	visit_date,
 	case 
@@ -117,7 +117,7 @@ select
     from final_query
     group by 1, 2	
     order by 1
---затраты на рекламу
+--Р·Р°С‚СЂР°С‚С‹ РЅР° СЂРµРєР»Р°РјСѓ
 select 
 	visit_date,
 	utm_source,
@@ -126,9 +126,9 @@ from final_query
 where total_cost <> 0
 group by 1, 2
 order by 1
---CPU (CPL, CPPU и ROI меняется только агрегат, CPL - sum(total_cost) * 1.0/ sum(leads_count), CPPU - sum(total_cost) * 1.0/ sum(purchases_count), ROI - (sum(revenue) - sum(total_cost)) * 1.0/ sum(total_cost))
+--CPU (CPL, CPPU Рё ROI РјРµРЅСЏРµС‚СЃСЏ С‚РѕР»СЊРєРѕ Р°РіСЂРµРіР°С‚, CPL - sum(total_cost) * 1.0/ sum(leads_count), CPPU - sum(total_cost) * 1.0/ sum(purchases_count), ROI - (sum(revenue) - sum(total_cost)) * 1.0/ sum(total_cost))
 select round(sum(total_cost)*1.0/sum(visitors_count), 2) from final_query
---CPU source (то же самое с medium и campaign)
+--CPU source (С‚Рѕ Р¶Рµ СЃР°РјРѕРµ СЃ medium Рё campaign)
 select 
 	utm_source, 
 	round(sum(total_cost)*1.0/sum(visitors_count), 2) as cpu_source 
