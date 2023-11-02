@@ -77,19 +77,27 @@ order by 9 desc nulls last, 1, 2 desc, 3, 4, 5
 
 --ЗАПРОСЫ В ДАШБОРД
 
---select * from final_query
+--основное полотно aggregated_last_click
+select * from final_query
+
 --количество пользователей
 select sum(visitors_count) from final_query  
+
 --количество лидов
 select sum(leads_count) from final_query
+
 --конверсия в лиды
 select round(sum(leads_count)*100.0/sum(visitors_count), 2) from final_query
+
 --конверсия в оплату
 select round(sum(purchases_count)*100.0/sum(leads_count), 2) from final_query
+
 --затраты на рекламу
 select sum(total_cost) from final_query
+
 --выручка
 select sum(revenue) from final_query
+
 --пользователи по неделям и месяцам
 select  
 	case 
@@ -103,6 +111,7 @@ select
 	sum(visitors_count)
 from final_query
 group by 1, 2
+
 --пользователи по дням
 select 
 	visit_date,
@@ -117,6 +126,7 @@ select
     from final_query
     group by 1, 2	
     order by 1
+
 --затраты на рекламу
 select 
 	visit_date,
@@ -126,8 +136,10 @@ from final_query
 where total_cost <> 0
 group by 1, 2
 order by 1
+
 --CPU (CPL, CPPU и ROI меняется только агрегат, CPL - sum(total_cost) * 1.0/ sum(leads_count), CPPU - sum(total_cost) * 1.0/ sum(purchases_count), ROI - (sum(revenue) - sum(total_cost)) * 1.0/ sum(total_cost))
 select round(sum(total_cost)*1.0/sum(visitors_count), 2) from final_query
+
 --CPU source (то же самое с medium и campaign)
 select 
 	utm_source, 
@@ -135,6 +147,7 @@ select
 from final_query 
 group by 1 
 having round(sum(total_cost)*1.0/sum(visitors_count), 2) is not null
+
 --корреляция Пирсона между затратами и выручкой
 select 
 	case 
@@ -144,7 +157,7 @@ select
 	end as utm_source,
 	coalesce(sum(total_cost), 0) as total_cost,
 	sum(revenue) as revenue,
-	coalesce(CORR(total_cost, revenue), 0) as correlation
+	round(cast(coalesce(corr(total_cost, revenue), 0) as numeric), 3) as correlation
 from final_query
 group by 1
 
